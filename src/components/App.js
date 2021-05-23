@@ -1,51 +1,16 @@
 // import logo from './logo.svg';
 // import './App.css';
-import logo from './images/header/logo.svg';
+// import logo from '../images/header/logo';
+import Header from './Header.js';
+import Main from './Main.js';
+import Footer from './Footer.js';
 
 function App() {
   return (
     <div className="App">
-    <header className="header body__header">
-      {/* <img className="header__logo" /src="<%=require('./images/header/logo.svg')%>" alt="Логотип сайта Mesto"> */}
-      <img className="header__logo" src={logo} alt="Логотип сайта Mesto"/>
-    </header>
-    <main className="main">
-      <section className="profile main__profile">
-        <div className="profile__main-info">
-          <div className="profile__avatar"></div>
-        
-          <div className="profile__info">
-            <h1 className="profile__name">Жак-Ив Кусто</h1>
-            <button className="profile__edit" type="button" aria-label="Edit"></button>
-            <p className="profile__description">Исследователь океана</p>
-          </div>
-        </div>
-        <button className="profile__add-button" type="button" aria-label="Add">
-        </button>
-      </section>
-      <section className="elements main__elements">
-        <ul className="elements__list">
-        </ul>
-      </section>
-      <template className="element-template">
-        <li className="element">
-          <div className="element__delete">
-            <button className="element__delete-button"></button> 
-          </div>
-          <img className="element__image" src=" " alt=" "/>
-          <div className="element__group">
-            <h2 className="element__name"></h2>
-            <div className="element__like-group">
-              <button className="element__like"></button>
-              <span className="element__like-counter">0</span>
-            </div>
-          </div>
-        </li>
-      </template>
-    </main>
-    <footer className="footer body__footer">
-      &copy;2020 Mesto Russia
-    </footer>
+    <Header/>
+    <Main/>
+    <Footer/>
     <section className="popup popup_type_edit">
       <button className="popup__close-button" type="reset" aria-label="Close"></button>
       <form className="popup__container popup__container_type_edit" name="profileEditor" novalidate>
