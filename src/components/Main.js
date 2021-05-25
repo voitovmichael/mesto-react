@@ -1,8 +1,26 @@
 import React from 'react';
+import {api} from '../utils/api.js'
 export default class Main extends React.Component {
 
   constructor(props) {
     super (props);
+    this.state = {
+      userName: 'Жак Кусто',
+      userDescription: 'Исследователь океанов',
+      userAvatar: '../images/profile/Avatar.jpg'
+    }
+    this.api = api;
+  }
+
+  componentDidMount() {
+    this.api.getUserInfo()
+    .then((data) => {
+      this.setState({
+        'userName': data.name,
+        'userDecription': data.about,
+        'userAvatar': data.avatar
+      });
+    })
   }
   
   // handleEditAvatarClick = () => {
@@ -25,12 +43,12 @@ export default class Main extends React.Component {
       <main className="main">
         <section className="profile main__profile">
           <div className="profile__main-info">
-            <div className="profile__avatar" onClick={this.props.onEditAvatar}></div>
-          
+            <div className="profile__avatar" onClick={this.props.onEditAvatar} 
+              style={{backgroundImage: `url(${this.state.userAvatar})`}}></div>
             <div className="profile__info">
-              <h1 className="profile__name">Жак-Ив Кусто</h1>
+              <h1 className="profile__name">{this.state.userName}</h1>
               <button className="profile__edit" type="button" aria-label="Edit" onClick={this.props.onEditProfile}></button>
-              <p className="profile__description">Исследователь океана</p>
+              <p className="profile__description">{this.state.userDescription}</p>
             </div>
           </div>
           <button className="profile__add-button" type="button" aria-label="Add" onClick={this.props.onAddPlace}>

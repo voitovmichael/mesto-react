@@ -46,7 +46,6 @@ class App extends React.Component {
         isEditAvatarPopupOpen: false,
         isEditProfilePopupOpen: false,
         isAddPlacePopupOpen: false
-
       })
     }
   }
