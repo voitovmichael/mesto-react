@@ -1,6 +1,3 @@
-// import logo from './logo.svg';
-// import './App.css';
-// import logo from '../images/header/logo';
 import React from 'react';
 import Header from './Header.js';
 import Main from './Main.js';
@@ -8,116 +5,120 @@ import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isEditProfilePopupOpen: false,
-      isAddPlacePopupOpen: false,
-      isEditAvatarPopupOpen: false,
-      selectedCard: null
-    };
-    this._ESC_CODE = 27;
+function App (props) {
+
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+  
+  const [selectedCard, setSelectedCard] = React.useState(null);
+  const _ESC_CODE = 27;
+
+  const childrenEditProfile = (
+    <>
+      <input className="popup__input popup__input_purpose_name" name="element-name" type="text" placeholder="Имя"
+        required minLength="2" maxLength="40" />
+      <span className="popup__input-error element-name-placeholder"></span>
+      <input className="popup__input popup__input_purpose_description" name="element-link" type="text"  
+        placeholder="Описание деятельности" required minLength="2" maxLength="200" />
+      <span className="popup__input-error element-link-placeholder"></span>
+      {/* <button className="popup__confirm" type="submit">Сохранить</button> */}
+    </>
+  );
+
+  const childrenAddPlace = (
+    <>
+      <input className="popup__input popup__input_purpose_name" name="profileEditor-name" type="text"  placeholder="Название"
+        required minLength="2" maxLength="30" />
+      <span className="popup__input-error profileEditor-name-placeholder"></span>
+      <input className="popup__input popup__input_purpose_description" name="profileEditor-description" type="url"  
+        placeholder="Ссылка на картинку" required />
+      <span className="popup__input-error profileEditor-description-placeholder"></span>
+      {/* <button className="popup__confirm" type="submit">Создать</button> */}
+    </>
+  )
+
+  const childrenEditAvatar = (
+    <>
+      <input className="popup__input popup__input_purpose_description popup__input_purpose_link" name="avatarEditor-link" type="url"  
+        placeholder="Ссылка на картинку" required />
+      <span className="popup__input-error avatarEditor-link-placeholder"></span>
+    </>
+  )
+
+  const handleEditAvatarClick = () => {
+    setEditAvatarPopupOpen(true)
   }
 
-  handleOnEscClick () {
-    document.addEventListener('keyup', this.closeAllPopups);
-  }
-
-  handleEditAvatarClick = () => {
-    this.setState({isEditAvatarPopupOpen: true});
-    document.addEventListener('keyup', this.closeAllPopups);
-  }
-
-  handleEditProfileClick = () => {
-    this.setState({isEditProfilePopupOpen: true});
-    document.addEventListener('keyup', this.closeAllPopups);
+  const handleEditProfileClick = () => {
+    setEditProfilePopupOpen(true);
   }
 
   // обработчик открытия popup-a добавления карточки
-  handleAddPlaceClick = () => {
-    this.setState({isAddPlacePopupOpen: true});
-    document.addEventListener('keyup', this.closeAllPopups);
+  const handleAddPlaceClick = () => {
+    setAddPlacePopupOpen(true);
   }
 
   // обработчик открытия карточки
-  handleCardClick = (card) => {
-    this.setState({selectedCard: card})
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
   }
 
   // закрытие всех popup-ов
-  closeAllPopups = (evt) => {
-    if(evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-button')
-    || evt.keyCode === this._ESC_CODE) {
-      this.setState({
-        isEditAvatarPopupOpen: false,
-        isEditProfilePopupOpen: false,
-        isAddPlacePopupOpen: false,
-        selectedCard: null
-      })
-    }
+  const closeAllPopups = () => {
+    setEditAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setSelectedCard(null);
+    document.removeEventListener('keyup', clickEscape);
   }
 
-  render() {
-    const childrenEditProfile = (
-      <>
-        <input className="popup__input popup__input_purpose_name" name="element-name" type="text" value="" placeholder="Имя"
-          required minlength="2" maxlength="40" />
-        <span className="popup__input-error element-name-placeholder"></span>
-        <input className="popup__input popup__input_purpose_description" name="element-link" type="text" value="" 
-          placeholder="Описание деятельности" required minlength="2" maxlength="200" />
-        <span className="popup__input-error element-link-placeholder"></span>
-        <button className="popup__confirm" type="submit">Сохранить</button>
-      </>
-    );
+  // обработчик закрытия Overlay
+  const closeOverlay = (evt) => {
+    if(evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-button')) {
+      closeAllPopups();
+    }
+  } 
 
-    const childrenAddPlace = (
-      <>
-        <input className="popup__input popup__input_purpose_name" name="profileEditor-name" type="text" value="" placeholder="Название"
-          required minlength="2" maxlength="30" />
-        <span className="popup__input-error profileEditor-name-placeholder"></span>
-        <input className="popup__input popup__input_purpose_description" name="profileEditor-description" type="url" value="" 
-          placeholder="Ссылка на картинку" required />
-        <span className="popup__input-error profileEditor-description-placeholder"></span>
-        <button className="popup__confirm" type="submit">Создать</button>
-      </>
-    )
-
-    const childrenEditAvatar = (
-      <>
-        <input className="popup__input popup__input_purpose_description popup__input_purpose_link" name="avatarEditor-link" type="url" value="" 
-          placeholder="Ссылка на картинку" required />
-        <span className="popup__input-error avatarEditor-link-placeholder"></span>
-        <button className="popup__confirm" type="submit">Сохранить</button>
-      </>
-    )
+  // обработчик нажатия ESC
+  const clickEscape = (evt) => {
+    if(evt.keyCode === _ESC_CODE) {
+      closeAllPopups();
+    }
+  }
 
     return (
       <div className="App">
       <Header/>
       <Main 
-        onEditProfile={this.handleEditProfileClick}
-        onAddPlace={this.handleAddPlaceClick}
-        onEditAvatar={this.handleEditAvatarClick}
-        onCardClick={this.handleCardClick}
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+        onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
       />
       <Footer/>
+
       <PopupWithForm name="editProfile" title="Редактировать профиль" 
-        children={childrenEditProfile} isOpen={this.state.isEditProfilePopupOpen}
-        onClose={this.closeAllPopups}
-      />
-      <PopupWithForm name="addPlace" title="Новое место" children={childrenAddPlace}
-        isOpen={this.state.isAddPlacePopupOpen}
-        onClose={this.closeAllPopups}
-      />
-      <ImagePopup card={this.state.selectedCard} onClose={this.closeAllPopups}/>
-      <PopupWithForm name="editAvatar" title="Обновить аватар" children={childrenEditAvatar}
-        isOpen={this.state.isEditAvatarPopupOpen}
-        onClose={this.closeAllPopups}
-      />
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeOverlay} onCloseEscape={clickEscape}
+        buttonText='Сохранить'>
+        {childrenEditProfile}  
+      </PopupWithForm>
+
+      <PopupWithForm name="addPlace" title="Новое место" isOpen={isAddPlacePopupOpen}
+        onClose={closeOverlay} onCloseEscape={clickEscape} buttonText='Создать'>
+        {childrenAddPlace}
+      </PopupWithForm>
+
+      <ImagePopup card={selectedCard} onClose={closeOverlay} onCloseEscape={clickEscape}/>
+      
+      <PopupWithForm name="editAvatar" title="Обновить аватар"isOpen={isEditAvatarPopupOpen}
+        onClose={closeOverlay} onCloseEscape={clickEscape} buttonText='Сохранить'>
+        {childrenEditAvatar}
+      </PopupWithForm>
+    
       </div>
     );
-  }
 }
 
 export default App;

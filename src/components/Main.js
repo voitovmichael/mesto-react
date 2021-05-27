@@ -38,8 +38,7 @@ export default class Main extends React.Component {
 
   render() {
     const cards = this.state.cards;
-    const cardsArr = cards.map((card) => <Card card={card} onCardClick={this.props.onCardClick}/>);
-    if (cards.length > 0) {
+    const cardsArr = cards.map((card) => (<Card card={card} key={card._id} onCardClick={this.props.onCardClick}/>));
     return (
       <main className="main">
         <section className="profile main__profile">
@@ -62,8 +61,5 @@ export default class Main extends React.Component {
         </section>
       </main>
     )
-      } else {
-        return (<> </>)
-      }
   }
 }
