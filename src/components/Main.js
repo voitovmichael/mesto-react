@@ -1,5 +1,6 @@
 import React from 'react';
 import {api} from '../utils/api.js'
+import Card from './Card.js';
 export default class Main extends React.Component {
 
   constructor(props) {
@@ -7,9 +8,14 @@ export default class Main extends React.Component {
     this.state = {
       userName: 'Жак Кусто',
       userDescription: 'Исследователь океанов',
-      userAvatar: '../images/profile/Avatar.jpg'
+      userAvatar: '../images/profile/Avatar.jpg',
+      cards: []
     }
     this.api = api;
+  }
+
+  reject = (err) => {
+    console.log(err);
   }
 
   componentDidMount() {
@@ -21,29 +27,24 @@ export default class Main extends React.Component {
         'userAvatar': data.avatar
       });
     })
+    .catch(this.reject);
+
+    this.api.getCards()
+    .then((data) => {
+      this.setState({cards: data})
+    })
+    .catch(this.reject)
   }
-  
-  // handleEditAvatarClick = () => {
-  //   this.popupEditAvatar = document.querySelector('.popup_type_editAvatar');
-  //   this.popupEditAvatar.classList.add('popup_opened');
-  // }
-
-  // handleEditProfileClick = () => {
-  //   this.popupEditProfile = document.querySelector('.popup_type_editProfile');
-  //   this.popupEditProfile.classList.add('popup_opened');
-  // }
-
-  // handleAddPlaceClick = () => {
-  //   this.popupAddPlace = document.querySelector('.popup_type_addPlace');
-  //   this.popupAddPlace.classList.add('popup_opened');
-  // }
 
   render() {
+    const cards = this.state.cards;
+    const cardsArr = cards.map((card) => <Card card={card} onCardClick={this.props.onCardClick}/>);
+    if (cards.length > 0) {
     return (
       <main className="main">
         <section className="profile main__profile">
           <div className="profile__main-info">
-            <div className="profile__avatar" onClick={this.props.onEditAvatar} 
+            <div className="profile__avatar" onClick={this.props.onEditAvatar}
               style={{backgroundImage: `url(${this.state.userAvatar})`}}></div>
             <div className="profile__info">
               <h1 className="profile__name">{this.state.userName}</h1>
@@ -56,24 +57,13 @@ export default class Main extends React.Component {
         </section>
         <section className="elements main__elements">
           <ul className="elements__list">
+          {cardsArr}
           </ul>
         </section>
-        <template className="element-template">
-          <li className="element">
-            <div className="element__delete">
-              <button className="element__delete-button"></button> 
-            </div>
-            <img className="element__image" src=" " alt=" "/>
-            <div className="element__group">
-              <h2 className="element__name"></h2>
-              <div className="element__like-group">
-                <button className="element__like"></button>
-                <span className="element__like-counter">0</span>
-              </div>
-            </div>
-          </li>
-        </template>
       </main>
     )
+      } else {
+        return (<> </>)
+      }
   }
 }
