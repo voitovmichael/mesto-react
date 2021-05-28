@@ -34,7 +34,6 @@ function App (props) {
       <input className="popup__input popup__input_purpose_description" name="profileEditor-description" type="url"  
         placeholder="Ссылка на картинку" required />
       <span className="popup__input-error profileEditor-description-placeholder"></span>
-      {/* <button className="popup__confirm" type="submit">Создать</button> */}
     </>
   )
 
@@ -64,28 +63,34 @@ function App (props) {
     setSelectedCard(card);
   }
 
-  // закрытие всех popup-ов
-  const closeAllPopups = () => {
-    setEditAvatarPopupOpen(false);
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setSelectedCard(null);
-    document.removeEventListener('keyup', clickEscape);
-  }
+  // обработчик нажатия ESC
+  React.useEffect(() => {
+    const clickEscape = (evt) => {
+      if(evt.keyCode === _ESC_CODE) {
+        closeAllPopups();
+      }
+    }
+    document.addEventListener('keyup', clickEscape);
+    return () => {
+      document.removeEventListener('keyup', clickEscape);
+    }
+  }, []);
 
   // обработчик закрытия Overlay
   const closeOverlay = (evt) => {
     if(evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-button')) {
       closeAllPopups();
     }
-  } 
-
-  // обработчик нажатия ESC
-  const clickEscape = (evt) => {
-    if(evt.keyCode === _ESC_CODE) {
-      closeAllPopups();
-    }
   }
+
+  // закрытие всех popup-ов
+  const closeAllPopups = () => {
+    setEditAvatarPopupOpen(false);
+    setEditProfilePopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setSelectedCard(null);
+  }
+
 
     return (
       <div className="App">
@@ -100,20 +105,20 @@ function App (props) {
 
       <PopupWithForm name="editProfile" title="Редактировать профиль" 
         isOpen={isEditProfilePopupOpen}
-        onClose={closeOverlay} onCloseEscape={clickEscape}
+        onClose={closeOverlay}
         buttonText='Сохранить'>
         {childrenEditProfile}  
       </PopupWithForm>
 
       <PopupWithForm name="addPlace" title="Новое место" isOpen={isAddPlacePopupOpen}
-        onClose={closeOverlay} onCloseEscape={clickEscape} buttonText='Создать'>
+        onClose={closeOverlay} buttonText='Создать'>
         {childrenAddPlace}
       </PopupWithForm>
 
-      <ImagePopup card={selectedCard} onClose={closeOverlay} onCloseEscape={clickEscape}/>
+      <ImagePopup card={selectedCard} onClose={closeOverlay} />
       
       <PopupWithForm name="editAvatar" title="Обновить аватар"isOpen={isEditAvatarPopupOpen}
-        onClose={closeOverlay} onCloseEscape={clickEscape} buttonText='Сохранить'>
+        onClose={closeOverlay} buttonText='Сохранить'>
         {childrenEditAvatar}
       </PopupWithForm>
     

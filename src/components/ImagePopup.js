@@ -1,6 +1,4 @@
 function ImagePopup (props) {
-  
-  document.addEventListener('keyup', props.onCloseEscape);
   return (
     <section className={`popup popup_type_image ${props.card && 'popup_opened'}`} onClick={props.onClose}>
     <button className="popup__close-button" type="reset" aria-label="Close"></button>
