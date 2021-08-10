@@ -4,13 +4,16 @@ import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
+import {api} from '../utils/api.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContexts.js'
 
 function App (props) {
 
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  
+  const [currentUser, setCurrentUser] = React.useState({});
+
   const [selectedCard, setSelectedCard] = React.useState(null);
   const _ESC_CODE = 27;
 
@@ -70,7 +73,15 @@ function App (props) {
         closeAllPopups();
       }
     }
+
     document.addEventListener('keyup', clickEscape);
+    
+    //делаем запрос данных текщего пользователя через API
+    api.getUserInfo()
+    .then((response) => {
+      setCurrentUser(response)
+    });
+
     return () => {
       document.removeEventListener('keyup', clickEscape);
     }
@@ -91,39 +102,39 @@ function App (props) {
     setSelectedCard(null);
   }
 
-
-    return (
-      <div className="App">
+  return (
+    <div className="App">
       <Header/>
-      <Main 
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onEditAvatar={handleEditAvatarClick}
-        onCardClick={handleCardClick}
-      />
-      <Footer/>
+    <CurrentUserContext.Provider value={currentUser}>
+        <Main 
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+          onCardClick={handleCardClick}
+        />
+        <Footer/>
 
-      <PopupWithForm name="editProfile" title="Редактировать профиль" 
-        isOpen={isEditProfilePopupOpen}
-        onClose={closeOverlay}
-        buttonText='Сохранить'>
-        {childrenEditProfile}  
-      </PopupWithForm>
+        <PopupWithForm name="editProfile" title="Редактировать профиль" 
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeOverlay}
+          buttonText='Сохранить'>
+          {childrenEditProfile}  
+        </PopupWithForm>
 
-      <PopupWithForm name="addPlace" title="Новое место" isOpen={isAddPlacePopupOpen}
-        onClose={closeOverlay} buttonText='Создать'>
-        {childrenAddPlace}
-      </PopupWithForm>
+        <PopupWithForm name="addPlace" title="Новое место" isOpen={isAddPlacePopupOpen}
+          onClose={closeOverlay} buttonText='Создать'>
+          {childrenAddPlace}
+        </PopupWithForm>
 
-      <ImagePopup card={selectedCard} onClose={closeOverlay} />
-      
-      <PopupWithForm name="editAvatar" title="Обновить аватар"isOpen={isEditAvatarPopupOpen}
-        onClose={closeOverlay} buttonText='Сохранить'>
-        {childrenEditAvatar}
-      </PopupWithForm>
-    
-      </div>
-    );
+        <ImagePopup card={selectedCard} onClose={closeOverlay} />
+        
+        <PopupWithForm name="editAvatar" title="Обновить аватар"isOpen={isEditAvatarPopupOpen}
+          onClose={closeOverlay} buttonText='Сохранить'>
+          {childrenEditAvatar}
+        </PopupWithForm>
+      </CurrentUserContext.Provider>
+    </div>
+  );
 }
 
 export default App;

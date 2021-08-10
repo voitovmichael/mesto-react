@@ -1,14 +1,13 @@
 import React from 'react';
 import {api} from '../utils/api.js'
 import Card from './Card.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContexts.js';
+import { CardContext } from '../contexts/CardContext.js';
 export default class Main extends React.Component {
-
+  static contextType = CurrentUserContext;
   constructor(props) {
     super (props);
     this.state = {
-      userName: 'Жак Кусто',
-      userDescription: 'Исследователь океанов',
-      userAvatar: '../images/profile/Avatar.jpg',
       cards: []
     }
     this.api = api;
@@ -19,17 +18,7 @@ export default class Main extends React.Component {
   }
 
   componentDidMount() {
-    this.api.getUserInfo()
-    .then((data) => {
-      this.setState({
-        'userName': data.name,
-        'userDecription': data.about,
-        'userAvatar': data.avatar
-      });
-    })
-    .catch(this.reject);
-
-    this.api.getCards()
+     this.api.getCards()
     .then((data) => {
       this.setState({cards: data})
     })
@@ -38,17 +27,23 @@ export default class Main extends React.Component {
 
   render() {
     const cards = this.state.cards;
-    const cardsArr = cards.map((card) => (<Card card={card} key={card._id} onCardClick={this.props.onCardClick}/>));
+    const cardsArr = cards.map((card) => {
+     return (
+      <CardContext.Provider key={card._id} value={card}>
+        <Card onCardClick={this.props.onCardClick}/> 
+      </CardContext.Provider>
+     )
+    });
     return (
       <main className="main">
         <section className="profile main__profile">
           <div className="profile__main-info">
             <div className="profile__avatar" onClick={this.props.onEditAvatar}
-              style={{backgroundImage: `url(${this.state.userAvatar})`}}></div>
+              style={{backgroundImage: `url(${this.context.avatar})`}}></div>
             <div className="profile__info">
-              <h1 className="profile__name">{this.state.userName}</h1>
+              <h1 className="profile__name">{this.context.name}</h1>
               <button className="profile__edit" type="button" aria-label="Edit" onClick={this.props.onEditProfile}></button>
-              <p className="profile__description">{this.state.userDescription}</p>
+              <p className="profile__description">{this.about}</p>
             </div>
           </div>
           <button className="profile__add-button" type="button" aria-label="Add" onClick={this.props.onAddPlace}>
