@@ -63,6 +63,15 @@ export default class Api {
     .then(this._resolve);
   }
 
+  changeLike(id, isLike) {
+    const method = isLike ? 'PUT' : 'DELETE';
+    return fetch(`${this._url}/cards/likes/${id}`, {
+      method: method,
+      headers: this._headers
+    })
+    .then(this._resolve);
+  }
+
   deleteLike(id) {
     return fetch(`${this._url}/cards/likes/${id}`, {
       method: 'DELETE',

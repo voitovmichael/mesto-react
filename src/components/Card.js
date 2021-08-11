@@ -7,11 +7,17 @@ function Card (props){
   const handleClick = () => {
     props.onCardClick(card)
   }
-  const isOwn = card._id === currentUser._id;
+  const handleLike = () => {
+    props.onCardLike(card);
+  }
+  const handleDelete = () => {
+    props.onCardDelete(card)
+  }
+  const isOwn = card.owner._id === props.currentUserId;
   return (
         <li className="element">
           <div className={`element__delete ${isOwn ? 'element__delete_active' : ''}`}>
-            <button className="element__delete-button"></button> 
+            <button className="element__delete-button" onClick={handleDelete}></button> 
           </div>
           <img className="element__image" src={card.link} alt={card.name}
             onClick={handleClick}
@@ -19,7 +25,7 @@ function Card (props){
           <div className="element__group">
             <h2 className="element__name">{card.name}</h2>
             <div className="element__like-group">
-              <button className="element__like"></button>
+              <button className="element__like" onClick={handleLike}></button>
               <span className="element__like-counter">{card.likes.length}</span>
             </div>
           </div>
