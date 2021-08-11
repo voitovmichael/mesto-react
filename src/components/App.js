@@ -6,6 +6,7 @@ import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import {api} from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContexts.js'
+import EditProfilePopup from './EditProfilePopup.js';
 
 function App (props) {
 
@@ -17,17 +18,17 @@ function App (props) {
   const [selectedCard, setSelectedCard] = React.useState(null);
   const _ESC_CODE = 27;
 
-  const childrenEditProfile = (
-    <>
-      <input className="popup__input popup__input_purpose_name" name="element-name" type="text" placeholder="Имя"
-        required minLength="2" maxLength="40" />
-      <span className="popup__input-error element-name-placeholder"></span>
-      <input className="popup__input popup__input_purpose_description" name="element-link" type="text"  
-        placeholder="Описание деятельности" required minLength="2" maxLength="200" />
-      <span className="popup__input-error element-link-placeholder"></span>
-      {/* <button className="popup__confirm" type="submit">Сохранить</button> */}
-    </>
-  );
+  // const childrenEditProfile = (
+  //   <>
+  //     <input className="popup__input popup__input_purpose_name" name="element-name" type="text" placeholder="Имя"
+  //       required minLength="2" maxLength="40" />
+  //     <span className="popup__input-error element-name-placeholder"></span>
+  //     <input className="popup__input popup__input_purpose_description" name="element-link" type="text"  
+  //       placeholder="Описание деятельности" required minLength="2" maxLength="200" />
+  //     <span className="popup__input-error element-link-placeholder"></span>
+  //     {/* <button className="popup__confirm" type="submit">Сохранить</button> */}
+  //   </>
+  // );
 
   const childrenAddPlace = (
     <>
@@ -102,6 +103,12 @@ function App (props) {
     setSelectedCard(null);
   }
 
+  //объявляем обновление данных по пользователю
+  const handleUpdateuser = ({name, about}) => {
+    api.changeUserInfo({name, about});
+    closeAllPopups();
+  }
+
   return (
     <div className="App">
       <Header/>
@@ -114,12 +121,7 @@ function App (props) {
         />
         <Footer/>
 
-        <PopupWithForm name="editProfile" title="Редактировать профиль" 
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeOverlay}
-          buttonText='Сохранить'>
-          {childrenEditProfile}  
-        </PopupWithForm>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeOverlay} onUpdateUser={handleUpdateuser}/>
 
         <PopupWithForm name="addPlace" title="Новое место" isOpen={isAddPlacePopupOpen}
           onClose={closeOverlay} buttonText='Создать'>
