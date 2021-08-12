@@ -1,6 +1,6 @@
 import {token} from './constants'
 
-export default class Api {
+class Api {
   constructor(options) {
     this._url = options.url;
     this._headers = options.headers
@@ -101,4 +101,4 @@ const api = new Api({url: 'https://mesto.nomoreparties.co/v1/cohort-23', headers
   'Content-Type': 'application/json'
 }});
 
-export {api}
+export default api
