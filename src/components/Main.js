@@ -1,7 +1,7 @@
 import React from 'react';
 import {api} from '../utils/api.js'
 import Card from './Card.js';
-import { CurrentUserContext } from '../contexts/CurrentUserContexts.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { CardContext } from '../contexts/CardContext.js';
 export default class Main extends React.Component {
   static contextType = CurrentUserContext;
