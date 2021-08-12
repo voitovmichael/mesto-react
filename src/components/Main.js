@@ -11,48 +11,15 @@ export default class Main extends React.Component {
       cards: []
     }
     this.api = api;
-    // const handleCardLike = this.handleCardLike.bind(this);
-    // const handleCardLike = this.handleCardLike.bind(this);
-  }
-
-  reject = (err) => {
-    console.log(err);
-  }
-
-  componentDidMount() {
-     this.api.getCards()
-    .then((data) => {
-      this.setState({cards: data})
-    })
-    .catch(this.reject)
-  }
-
-  handleCardLike = (card) => {
-    const isLike = card.likes.some(i => i._id === this.context._id);
-    api.changeLike(card._id, !isLike)
-    .then((newCard) => {
-      const cards = this.state.cards.map((c) => c._id === newCard._id ? newCard : c);
-      this.setState({cards: cards})
-      // this.setState((state) => state.map((c) => c._id === card._id ? newCard : c))
-    })
-    .catch(this.reject);
-  }
-
-  handleCardDelete = (delCard) => {
-    api.deleteCard(delCard._id)
-    .catch(this.reject);
-    const cards = this.state.cards.filter((card) => delCard._id !== card._id ? card : null);
-    this.setState({cards: cards});
   }
 
   render() {
-    const cards = this.state.cards;
-    const cardsArr = cards.map((card) => {
+    const cardsArr = this.props.cards.map((card) => {
      return (
       <CardContext.Provider key={card._id} value={card}>
         <Card onCardClick={this.props.onCardClick}
-        onCardLike={this.handleCardLike}
-        onCardDelete={this.handleCardDelete}
+        onCardLike={this.props.onCardLike}
+        onCardDelete={this.props.onCardDelete}
         currentUserId={this.context._id}
         /> 
       </CardContext.Provider>
