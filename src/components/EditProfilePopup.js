@@ -10,8 +10,8 @@ function EditProfilePopup (props) {
   const [description, setDescription] = React.useState('Морской исследователь');
   //объявляем методы изменения input-ов
   const changeName = (evt) => {
-    const newName = evt.currentTarget.value ? evt.currentTarget.value : name;
-    setName(newName);
+    // const newName = evt.currentTarget.value ? evt.currentTarget.value : name;
+    setName(evt.currentTarget.value);
   }
   const changeDescription = (evt) => {
     const newDescriptiopn = evt.currentTarget.value ? evt.currentTarget.value : description;

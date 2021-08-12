@@ -7,6 +7,7 @@ import ImagePopup from './ImagePopup.js';
 import {api} from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContexts.js'
 import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
 
 function App (props) {
 
@@ -14,7 +15,6 @@ function App (props) {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
-
   const [selectedCard, setSelectedCard] = React.useState(null);
   const _ESC_CODE = 27;
 
@@ -41,13 +41,13 @@ function App (props) {
     </>
   )
 
-  const childrenEditAvatar = (
-    <>
-      <input className="popup__input popup__input_purpose_description popup__input_purpose_link" name="avatarEditor-link" type="url"  
-        placeholder="Ссылка на картинку" required />
-      <span className="popup__input-error avatarEditor-link-placeholder"></span>
-    </>
-  )
+  // const childrenEditAvatar = (
+  //   <>
+  //     <input className="popup__input popup__input_purpose_description popup__input_purpose_link" name="avatarEditor-link" type="url"  
+  //       placeholder="Ссылка на картинку" required />
+  //     <span className="popup__input-error avatarEditor-link-placeholder"></span>
+  //   </>
+  // )
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopupOpen(true)
@@ -104,11 +104,23 @@ function App (props) {
   }
 
   //объявляем обновление данных по пользователю
-  const handleUpdateuser = ({name, about}) => {
-    api.changeUserInfo({name, about});
+  const handleUpdateUser = ({name, about}) => {
+    if(name && about) {
+      api.changeUserInfo({name, about})
+      .then((userInfo) => setCurrentUser(userInfo));
+    }
     closeAllPopups();
   }
-
+  //Обновляем аватар
+  const handleUpdateAvatar = (avatar) => {
+    if(avatar) {
+      api.changeAvatar({avatar})
+      .then((response) => {
+        setCurrentUser(response)
+      })
+    }
+    closeAllPopups();
+  }
   return (
     <div className="App">
       <Header/>
@@ -121,7 +133,7 @@ function App (props) {
         />
         <Footer/>
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeOverlay} onUpdateUser={handleUpdateuser}/>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeOverlay} onUpdateUser={handleUpdateUser}/>
 
         <PopupWithForm name="addPlace" title="Новое место" isOpen={isAddPlacePopupOpen}
           onClose={closeOverlay} buttonText='Создать'>
@@ -129,11 +141,7 @@ function App (props) {
         </PopupWithForm>
 
         <ImagePopup card={selectedCard} onClose={closeOverlay} />
-        
-        <PopupWithForm name="editAvatar" title="Обновить аватар"isOpen={isEditAvatarPopupOpen}
-          onClose={closeOverlay} buttonText='Сохранить'>
-          {childrenEditAvatar}
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeOverlay} onUpdateAvatar={handleUpdateAvatar} />
       </CurrentUserContext.Provider>
     </div>
   );
