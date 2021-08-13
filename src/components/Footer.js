@@ -1,7 +1,7 @@
 export default function Footer (props) {
   return (
     <footer className="footer body__footer">
-      &copy;2020 Mesto Russia
+      &copy;2021 Mesto Russia
     </footer>
   )
 }

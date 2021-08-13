@@ -52,16 +52,21 @@ function App (props) {
     document.addEventListener('keyup', clickEscape);
     
     //делаем запрос данных текщего пользователя через API
-    api.getUserInfo()
-    .then((response) => {
-      setCurrentUser(response)
-    });
-    //Добавляем запрос на добавление карточек
-    api.getCards()
-   .then((cardsList) => {
-     setCards(cardsList)
-   })
-   .catch(reject)
+    Promise.all([api.getUserInfo(), api.getCards()])
+    .then(([userInfo, cardsList]) => {
+      setCurrentUser(userInfo);
+      setCards(cardsList);
+    })
+    .catch(reject)
+  //   api.getUserInfo()
+  //   .then((response) => {
+  //     setCurrentUser(response)
+  //   });
+  //   //Добавляем запрос на добавление карточек
+  //   api.getCards()
+  //  .then((cardsList) => {
+  //    setCards(cardsList)
+  //  })
 
     return () => {
       document.removeEventListener('keyup', clickEscape);
@@ -87,19 +92,29 @@ function App (props) {
   const handleUpdateUser = ({name, about}) => {
     if(name && about) {
       api.changeUserInfo({name, about})
-      .then((userInfo) => setCurrentUser(userInfo));
+      .then((userInfo) => {
+        setCurrentUser(userInfo);
+        closeAllPopups();
+      });
     }
-    closeAllPopups();
   }
   //Обновляем аватар
   const handleUpdateAvatar = (avatar) => {
     if(avatar) {
       api.changeAvatar({avatar})
       .then((response) => {
-        setCurrentUser(response)
+        setCurrentUser(response);
+        closeAllPopups();
       })
     }
-    closeAllPopups();
+  }
+  const handleAddPlace = ({name, link}) => {
+    api.addCard({name, link})
+    .then((newCard) => {
+       setCards([newCard, ...cards])
+       closeAllPopups();
+     })
+    .catch(reject);
   }
   //метод обработки простановки лайков
   const handleCardLike = (card) => {
@@ -114,22 +129,18 @@ function App (props) {
 
  const handleCardDelete = (delCard) => {
    api.deleteCard(delCard._id)
+   .then(() => {
+      const newCards = cards.filter((card) => delCard._id !== card._id ? card : null);
+      setCards(newCards);
+   })
    .catch(reject);
-   const newCards = cards.filter((card) => delCard._id !== card._id ? card : null);
-   setCards(newCards);
  }
 
- const handleAddPlace = ({name, link}) => {
-   api.addCard({name, link})
-   .then((newCard) => {setCards([newCard, ...cards])})
-   .catch(reject);
-   closeAllPopups();
- }
 
   return (
     <div className="App">
       <Header/>
-    <CurrentUserContext.Provider value={currentUser}>
+      <CurrentUserContext.Provider value={currentUser}>
         <Main 
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
@@ -141,7 +152,6 @@ function App (props) {
           on
         />
         <Footer/>
-
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeOverlay} onUpdateUser={handleUpdateUser}/>
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeOverlay} onAddPlace={handleAddPlace}/>
         <ImagePopup card={selectedCard} onClose={closeOverlay} />
