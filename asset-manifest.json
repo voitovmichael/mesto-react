@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/voitovmichael/mesto-react/static/css/main.eae7a36e.chunk.css",
-    "main.js": "/voitovmichael/mesto-react/static/js/main.72443ee1.chunk.js",
-    "main.js.map": "/voitovmichael/mesto-react/static/js/main.72443ee1.chunk.js.map",
-    "runtime-main.js": "/voitovmichael/mesto-react/static/js/runtime-main.7f8c6e72.js",
-    "runtime-main.js.map": "/voitovmichael/mesto-react/static/js/runtime-main.7f8c6e72.js.map",
-    "static/js/2.1b20635f.chunk.js": "/voitovmichael/mesto-react/static/js/2.1b20635f.chunk.js",
-    "static/js/2.1b20635f.chunk.js.map": "/voitovmichael/mesto-react/static/js/2.1b20635f.chunk.js.map",
-    "index.html": "/voitovmichael/mesto-react/index.html",
-    "static/css/main.eae7a36e.chunk.css.map": "/voitovmichael/mesto-react/static/css/main.eae7a36e.chunk.css.map",
-    "static/js/2.1b20635f.chunk.js.LICENSE.txt": "/voitovmichael/mesto-react/static/js/2.1b20635f.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/voitovmichael/mesto-react/static/media/profile-editor.6c7bf054.svg",
-    "static/media/Galickii-park.6927af07.jpg": "/voitovmichael/mesto-react/static/media/Galickii-park.6927af07.jpg",
-    "static/media/logo.bbe2a6ea.svg": "/voitovmichael/mesto-react/static/media/logo.bbe2a6ea.svg"
+    "main.css": "/mesto-react/static/css/main.f9167bd2.chunk.css",
+    "main.js": "/mesto-react/static/js/main.72443ee1.chunk.js",
+    "main.js.map": "/mesto-react/static/js/main.72443ee1.chunk.js.map",
+    "runtime-main.js": "/mesto-react/static/js/runtime-main.cbc19cfe.js",
+    "runtime-main.js.map": "/mesto-react/static/js/runtime-main.cbc19cfe.js.map",
+    "static/js/2.1b20635f.chunk.js": "/mesto-react/static/js/2.1b20635f.chunk.js",
+    "static/js/2.1b20635f.chunk.js.map": "/mesto-react/static/js/2.1b20635f.chunk.js.map",
+    "index.html": "/mesto-react/index.html",
+    "static/css/main.f9167bd2.chunk.css.map": "/mesto-react/static/css/main.f9167bd2.chunk.css.map",
+    "static/js/2.1b20635f.chunk.js.LICENSE.txt": "/mesto-react/static/js/2.1b20635f.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/mesto-react/static/media/profile-editor.6c7bf054.svg",
+    "static/media/Galickii-park.6927af07.jpg": "/mesto-react/static/media/Galickii-park.6927af07.jpg",
+    "static/media/logo.bbe2a6ea.svg": "/mesto-react/static/media/logo.bbe2a6ea.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.7f8c6e72.js",
+    "static/js/runtime-main.cbc19cfe.js",
     "static/js/2.1b20635f.chunk.js",
-    "static/css/main.eae7a36e.chunk.css",
+    "static/css/main.f9167bd2.chunk.css",
     "static/js/main.72443ee1.chunk.js"
   ]
 }
